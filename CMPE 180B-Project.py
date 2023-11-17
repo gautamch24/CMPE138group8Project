@@ -1,3 +1,5 @@
+### We should replace "your_host", "your_user", "your_password", and "your_database" with our actual MySQL server details
+
 import mysql.connector
 from getpass import getpass  # For secure password input
 import logging
