@@ -87,7 +87,7 @@ def display_ticket_class():
     if tickets:
         print("\nTypes of Tickets:")
         for ticket in tickets:
-            print(f"Ticket Class: {ticket[1]}, Price: {ticket[3]}")
+            print(f"Ticket Class: {ticket[0]}, Price: ${ticket[1]:.2f}")
 
 def end_user_menu():
     print("1. View records")
