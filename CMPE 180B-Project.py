@@ -80,13 +80,21 @@ def display_schedules():
     else:
         print("No schedules available.")
 
+def display_ticket_class():
+    cursor.execute("SELECT DISTINCT Ticket_Type, Ticket_Price FROM TICKETS")
+    tickets = cursor.fetchall()
 
+    if tickets:
+        print("\nTypes of Tickets:")
+        for ticket in tickets:
+            print(f"Ticket Class: {ticket[1]}, Price: {ticket[3]}")
 
 def end_user_menu():
     print("1. View records")
     print("2. Add booking")
     print("3. Cancel booking")
     print("4. Display schedules")
+    print("5. Display prices of different classes")
     choice = input("Enter your choice: ")
 
     if choice == "1":
@@ -102,7 +110,8 @@ def end_user_menu():
         pass
     elif choice == "4":
         display_schedules()
-
+    elif choice == "5":
+        display_ticket_class()
 
 
 
