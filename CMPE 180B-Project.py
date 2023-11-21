@@ -69,6 +69,22 @@ def purchase_ticket(customer_id):
     else:
         print("Invalid Schedule ID. Please try again.")
 
+def cancel_ticket():
+    Ticket_ID = input("Please enter your ticket number:")
+    cursor.execute("SELECT * FROM Tickets WHERE Ticket_ID = %s", (Ticket_ID,))
+    ticket = cursor.fetchone()
+    if Ticket_ID:
+        userAnswer= input("Are you sure you want to cancel this ticket? If so, enter yes. If not, enter no: ")
+        if userAnswer == "yes":
+            ticket = cursor.fetchone()
+            cursor.execute("DELETE FROM Tickets WHERE Ticket_ID = %s", (Ticket_ID,))
+            connection.commit()
+            print("Ticket has been cancelled")
+        else:
+            print(" Ticket is not cancelled ")
+    else:
+        print("The ticket you provided does not exist")
+
 def display_schedules():
     cursor.execute("SELECT * FROM SCHEDULE")
     schedules = cursor.fetchall()
@@ -106,7 +122,7 @@ def end_user_menu():
         if customer_id:
             purchase_ticket(customer_id)
     elif choice == "3":
-        # Implement cancel booking functionality
+        cancel_ticket()
         pass
     elif choice == "4":
         display_schedules()
