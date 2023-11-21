@@ -105,12 +105,35 @@ def display_ticket_class():
         for ticket in tickets:
             print(f"Ticket Class: {ticket[0]}, Price: ${ticket[1]:.2f}")
 
+def display_reservations(customer_id):
+    cursor.execute("""
+        SELECT T.Ticket_ID, C.Train_ID, Tr.Train_Name, S.Arrival_Time, S.Departure_Time, S.Train_Date, S.Destination, T.Ticket_Type
+        FROM CUSTOMER C
+        JOIN Tickets T ON C.TICKET_ID = T.Ticket_ID
+        JOIN Schedule S ON C.TRAIN_ID = S.Train_ID
+        JOIN Train Tr ON C.TRAIN_ID = Tr.Train_ID
+        WHERE C.CUSTOMER_ID = %s
+        """, (customer_id,))
+
+    reservations = cursor.fetchall()
+
+    if reservations:
+        print("\nYour Current Reservation Information:")
+        for reservation in reservations:
+            print(f"Ticket ID: {reservation[0]}, Train ID: {reservation[1]}, Train Name: {reservation[2]}, "
+                  f"Arrival Time: {reservation[3]}, Departure Time: {reservation[4]}, "
+                  f"Train Date: {reservation[5]}, Destination: {reservation[6]}, "
+                  f"Ticket Type: {reservation[7]}")
+    else:
+        print("You have no current reservations.")
+
 def end_user_menu():
     print("1. View records")
     print("2. Add booking")
     print("3. Cancel booking")
     print("4. Display schedules")
     print("5. Display prices of different classes")
+    print("6. Display reservations")
     choice = input("Enter your choice: ")
 
     if choice == "1":
@@ -128,6 +151,11 @@ def end_user_menu():
         display_schedules()
     elif choice == "5":
         display_ticket_class()
+    elif choice == "6":
+        customer_id = session.get('user_id')
+        if customer_id:
+            display_reservations(customer_id)
+        
 
 
 
