@@ -589,6 +589,10 @@ class MainUserWindow(tk.Frame):
                           command=self.open_viewSchedule_window)
         viewSchedule_button.pack(padx=20, pady=(20, 10))
 
+        viewStation_button = tk.Button(self, text="View train stations", width=10,
+                          command=self.open_viewStation_window)
+        viewStation_button.pack(padx=20, pady=(20, 10))
+
         purchaseTicket_button = tk.Button(self, text="Purchase Ticket", width=10,
                           command=self.open_purchaseTicket_window)
         purchaseTicket_button.pack(padx=20, pady=(20, 10))
@@ -596,6 +600,8 @@ class MainUserWindow(tk.Frame):
         cancelTicket_button = tk.Button(self, text="Cancel Ticket", width=10,
                           command=self.open_cancelTicket_window)
         cancelTicket_button.pack(padx=20, pady=(20, 10))
+
+
 
         back_button = tk.Button(self, text="Back", width=8, command=self.back)
         back_button.pack(padx=20, pady=(20, 10))
@@ -605,6 +611,14 @@ class MainUserWindow(tk.Frame):
             widget.destroy()
         self.destroy()
         viewScheduleWindow(self.master)
+
+    def open_viewStation_window(self):
+        for widget in self.winfo_children(): 
+            widget.destroy()
+        self.destroy()
+        viewStationWindow(self.master)
+
+
     def open_purchaseTicket_window(self):
         for widget in self.winfo_children(): 
             widget.destroy()
@@ -701,7 +715,44 @@ class displaySchedule(tk.Frame):
         # v.pack(side = RIGHT, fill = 400)
         # 
 
+class viewStationWindow(tk.Frame):
+    def __init__(self, master):
+        super().__init__()
+        self.master = master
+        self.master.title("Stations Displayed")
+        center_window(800,400)
+        root.resizable(True,True)
+        self.pack()
+        cursor.execute("SELECT * FROM Station ORDER BY Departure_Station_Number ASC")
+        results = cursor.fetchall()
+        i=1
+        # text_widget = Text()
+        # text_widget.insert(tk.END, "Hello, Tkinter!\nThis is a multiline text widget.")
 
+        Label(self,width = 20, fg = 'white', text = "Departure Station Number ").grid(row = 0, column = 0)
+        Label(self,width = 20, fg = 'white', text = "Arrival Station Number").grid(row = 0, column = 1)
+        Label(self,width = 20, fg = 'white', text = "Station ID").grid(row = 0, column = 2)
+        Label(self,width = 25, fg = 'white', text = "Station Name").grid(row = 0, column = 3)
+        Label(self,width = 25, fg = 'white', text = "Station Location").grid(row = 0, column = 4)
+        self.pack()
+        for x in results:
+            # print('stuck here')
+            # Label(self,width = 10, fg = 'white', text = f"{x[0]}\t {x[1]}\t {x[2]}\t {x[3]}\t {x[4]}\t").grid(row = i)
+            Label(self,width = 20, fg = 'white', text = f"{x[0]}").grid(row = i, column = 0)
+            Label(self,width = 20, fg = 'white', text = f"{x[1]}").grid(row = i, column = 1)
+            Label(self,width = 20, fg = 'white', text = f"{x[2]}").grid(row = i, column = 2)
+            Label(self,width = 25, fg = 'white', text = f"{x[3]}").grid(row = i, column = 3)
+            Label(self,width = 25, fg = 'white', text = f"{x[4]}").grid(row = i, column = 4)
+            self.pack()
+            i=i+1
+        back_button = tk.Button(self, text="Back", width=8, command=self.back)
+        back_button.grid(row= i, column=2, padx=10, pady=10, sticky="e")
+        self.pack()
+    def back(self):
+        for widget in self.winfo_children(): 
+            widget.destroy()
+        self.destroy()
+        MainUserWindow(self.master)
 
 class EnterTicketForPurchaseWindow(tk.Frame):
     def __init__(self, master):
@@ -771,12 +822,13 @@ class purchaseTicketWindow(tk.Frame):
 
     def yesFunction(self, master,dataForTicketPurchase):
         Ticket_Price = purchaseTicketEntry(cursor, conn, dataForTicketPurchase)
+        TicketID = random.randint(1000,9999)
         if Ticket_Price != None:
             print('ticket price found')
             for widget in self.winfo_children(): 
                 widget.destroy()
             self.destroy()
-            confirmedPurchaseWindow(self.master,Ticket_Price)
+            confirmedPurchaseWindow(self.master,Ticket_Price,TicketID)
 
     def noFunction(self):
         for widget in self.winfo_children(): 
@@ -785,14 +837,14 @@ class purchaseTicketWindow(tk.Frame):
         EnterTicketForPurchaseWindow(self.master)
 
 class confirmedPurchaseWindow(tk.Frame):
-    def __init__(self, master,Ticket_Price):
+    def __init__(self, master,Ticket_Price,TicketID):
         super().__init__()
         self.master = master
         self.Ticket_Price = Ticket_Price
         self.master.title("Ticket Purchased!")
         center_window(800, 400)
 
-        tk.Label(self, text ="The ticket has been purchased!").grid(row=0, column=0)
+        tk.Label(self, text = f"The ticket has been purchased! The Ticket_ID is {TicketID}").grid(row=0, column=0)
         back_button = tk.Button(self, text ="Back", width =9, command = self.back)
         back_button.grid(row=4, column=1, padx=10, pady=10, sticky="e")
         self.pack()
