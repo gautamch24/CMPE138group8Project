@@ -1,0 +1,340 @@
+{
+    "type": "MySQLNotebook",
+    "version": "1.0",
+    "caption": "DB Notebook",
+    "content": "\\railway databse containing all of the tables we need for the project\n\nCREATE DATABASE RailwayDB;\nUSE RailwayDB;\nCREATE TABLE Train (\nTrain_ID INT PRIMARY KEY,\nTrain_Name VARCHAR(20));\nINSERT INTO Train (Train_ID,Train_Name)\nVALUES\n('618','ValleyWay'),\n('620','ValleyWay'),\n('623', 'ValleyWay'),\n('743', 'ValleyWay'),\n('745','ValleyWay'),\n('747','ValleyWay');\nUSE RailwayDB;\nCREATE TABLE Station(\nStation_Number int,\nStation_ID  varchar(5) PRIMARY KEY,\nStation_Name varchar(100) NOT NULL,\nStation_Location char(100) NOT NULL);\nINSERT INTO Station(Station_Number,Station_ID,Station_Name,Station_Location)\nVALUES\n('1','SJC','San Jose Diridon Station','San Jose, CA'),\n('2','SCC', 'Santa Clara-University Station', 'Santa Clara, CA'),\n('3','GAC', 'Santa Clara-Great America Station', 'Santa Clara, CA'),\n('4','FMT', 'Fremont-Centerville Station', 'Fremont, CA'),\n('5','HAY', 'Hayward Station', 'Hayward, CA'),\n('6','OAC', 'Oakland Coliseum Station', 'Oakland, CA'),\n('7','EMY', 'Emeryville Station', 'Emeryville, CA'),\n('8,''BKY', 'Berkeley Station','Berkley, CA'),\n('9','RIC', 'Richmond Station', 'Richmond,CA'),\n('10','MTZ', 'Martinez Station', 'Martinez,CA'),\n('11','SUI', 'Suisun-Fairfield Station', 'Suisun,CA'),\n('12','FFV', 'Fairfield-Vacaville Station', 'Vacaville,CA'),\n('13','DAV', 'Davis Station', 'Davis, CA'),\n('14', 'SAC', 'Sacramento Station', 'Sacramento,CA');\n\nUSE RailwayDB;\nCREATE TABLE Schedule (\n    Train_ID INT PRIMARY KEY NOT NULL,\n    Arrival_Time TIME,\n    Departure_Time TIME,\n    Train_Date DATE,\n    Destination VARCHAR(100)\n);\n\nINSERT INTO Schedule (Train_ID, Arrival_Time, Departure_Time, Train_Date, Destination)\nVALUES\n(618, '09:30:00', '09:30:00', '2023-12-01', 'Departing San Jose, CA. Next stop is Santa Clara - University Station'),\n(618, '09:43:00', '09:45:00', '2023-12-01', 'Departing Santa Clara - University Station. Next stop is Santa Clara - Great America Station'),\n(618, '09:51:00', '09:53:00', '2023-12-01', 'Departing Santa Clara - Great America Station. Next stop is Fremont - Centerville'),\n(618, '10:06:00', '10:08:00', '2023-12-01', 'Departing Fremont-Centerville. Next stop is Hayward Station'),\n(618, '10:21:00', '10:23:00', '2023-12-01', 'Departing Hayward. Next stop is Oakland Coliseum'),\n(618, '10:31:00', '10:33:00', '2023-12-01', 'Departing Oakland Coliseum. Next stop is Emeryville'),\n(618, '10:57:00', '10:59:00', '2023-12-01', 'Departing Emeryville. Next Stop is Berkeley Station'),\n(618, '11:05:00', '11:07:00', '2023-12-01', 'Departing Berkeley. Next stop is Richmond Station'),\n(618, '11:17:00', '11:19:00', '2023-12-01', 'Departing Richmond. Next stop is Martinez Station'),\n(618, '11:39:00', '11:41:00', '2023-12-01', 'Departing Martinez. Next stop is Suisun-Fairfield'),\n(618, '11:59:00', '12:01:00', '2023-12-01', 'Departing Suisun-Fairfield. Next stop is Fairfield-Vacaville'),\n(618, '12:07:00', '12:09:00', '2023-12-01', 'Departing Fairfield-Vacaville. Next stop is Davis'),\n(618, '12:26:00', '12:28:00', '2023-12-01', 'Departing Davis. Next stop is Sacramento'),\n(618, '12:35:00', '12:35:00', '2023-12-01', 'Arrived at Sacramento'),\n(743, '3:30:00 ', '3:30:00 ', '2023-12-01', 'Departing Sacramento,CA. Next stop is Davis Station'),\n(743, '3:45:00', '3:47:00', '2023-12-01', 'Departing Davis. Next stop is Fairfield-Vacaville Station'),\n(743, '4:05:00', '4:07:00', '2023-12-01', 'Departing Fairfield-Vacaville Station. Next stop is Suisun-Fairfield Station'),\n(743, '4:13:00', '4:15:00', '2023-12-01', 'Departing Suisun-Fairfield. Next stop is Martinez Station'),\n(743, '4:22:00', '4:24:00', '2023-12-01', 'Departing Martinez. Next stop is Richmond Station'),\n(743, '4:46:00', '4:49:00', '2023-12-01', 'Departing Richmond. Next stop is Berkeley Station'),\n(743, '4:54:00', '4:56:00', '2023-12-01', 'Departing Berkeley. Next stop is Emeryville Station'),\n(743, '5:02:00', '5:04:00', '2023-12-01', 'Departing Emeryville. Next stop is Oakland Coliseum Station'),\n(743, '5:22:00', '5:24:00', '2023-12-01', 'Departing Oakland Coliseum. Next stop is Hayward'),\n(743, '5:34:00', '5:36:00', '2023-12-01', 'Departing Hayward. Next stop is Fremont - Centerville Station'),\n(743, '5:48:00', '5:50:00', '2023-12-01', 'Departing Fremont - Centerville. Next stop is Santa Clara - Great America Station'),\n(743, '5:57:00', '5:59:00', '2023-12-01', 'Departing Santa Clara - Great America Station. Next stop is Santa Clara - University Station'),\n(743, '6:06:00', '6:06:00', '2023-12-01', 'Departing Santa Clara - University. Next stop is San Jose Diridon Station'),\n(743, '6:20:00', '6:20:00', '2023-12-01', 'Arrived at San Jose Diridon Station');\n\nCOMMIT;\nSELECT * FROM Schedule;\n\n\nUSE RailwayDB;\nCREATE TABLE Tickets(\nTicket_ID INT PRIMARY KEY NOT NULL,\nTrain_ID INT,\nTicket_Date DATE,\nTicket_Price DOUBLE NOT NULL,\nDeparture_Destination VARCHAR(200),\nArrival_Destination VARCHAR(200),\nFOREIGN KEY (Train_ID) REFERENCES Schedule(Train_ID)\n);\nINSERT INTO railwayDB.Tickets(Ticket_ID,Train_ID,Ticket_Date,Ticket_Price,Departure_Destination, Arrival_Destination)\nVALUES\n('4910','618','2023-12-01','12.50','San Jose', 'Hayward'),\n('9552','747','2023-12-01','15.50','Emeryville', 'San Jose'),\n('1164','743','2023-12-01','12.50','Sacramento','Martinez'),\n('9331','622','2023-12-01','26.00','San Jose', 'Sacramento');\nSELECT * FROM Tickets;\n\n\nUSE RailwayDB;\nCREATE TABLE customers\n(\nCUSTOMER_ID INT NOT NULL PRIMARY KEY,\nCUSTOMER_Name  varchar(255) NOT NULL,\nCUSTOMER_PASSWORD varchar(15) NOT NULL,\nCUSTOMER_EMAIL varchar (255) NOT NULL,\nCUSTOMER_Phone_Number INT NOT NULL,\nTICKET_ID INT NOT NULL DEFAULT '0',\nTRAIN_ID INT NOT NULL DEFAULT '0'\n);\nINSERT INTO railwayDB.customers(CUSTOMER_ID, CUSTOMER_Name, CUSTOMER_Password, CUSTOMER_Email, CUSTOMER_Phone_Number)\nVALUES\n(1, 'Alice Johnson', 'hashed_password_1', 'alice.johnson@example.com', '555-123-4567'),\n(2, 'Bob Smith', 'hashed_password_2', 'bob.smith@example.com', '123-456-7890'),\n(3, 'Charlie Brown', 'hashed_password_3', 'charlie.brown@example.com', '987-654-3210'),\n(4, 'David White', 'hashed_password_4', 'david.white@example.com', '111-222-3333'),\n(5, 'Eva Black', 'hashed_password_5', 'eva.black@example.com', '444-555-6666'),\n(6, 'Frank Green', 'hashed_password_6', 'frank.green@example.com', '777-888-9999'),\n(7, 'Grace Grey', 'hashed_password_7', 'grace.grey@example.com', '222-333-4444'),\n(8, 'Henry Red', 'hashed_password_8', 'henry.red@example.com', '999-888-7777'),\n(9, 'Ivy Blue', 'hashed_password_9', 'ivy.blue@example.com', '666-555-4444'),\n(10, 'Jack Orange', 'hashed_password_10', 'jack.orange@example.com', '333-444-5555'),\n(11, 'Kelly Yellow', 'hashed_password_11', 'kelly.yellow@example.com', '555-444-3333'),\n(12, 'Leo Purple', 'hashed_password_12', 'leo.purple@example.com', '111-999-7777'),\n(13, 'Mia Pink', 'hashed_password_13', 'mia.pink@example.com', '888-777-6666'),\n(14, 'Noah Brown', 'hashed_password_14', 'noah.brown@example.com', '123-321-1234'),\n(15, 'Olivia White', 'hashed_password_15', 'olivia.white@example.com', '987-123-5678');\nSELECT * FROM customers;\n\n CREATE table EMPLOYEE\n(\n    EMPLOYEE _ID INT NOT NULL,\n    EMPLOYEE _Name varchar(255) NOT NULL,\n    EMPLOYEE_USERNAME varchar(10) NOT NULL,\n    EMPLOYEE _PASSWORD varchar(15) NOT NULL,\n    PRIMARY KEY (' EMPLOYEE _ID')\n); \nINSERT INTO EMPLOYEE (Employee_ID, Employee_Name, Employee_User_Name, Employee_Password)\nVALUES\n(1, 'John Manager', 'john_manager', 'hashed_password_1'),\n(2, 'Alice Agent', 'alice_agent', 'hashed_password_2'),\n(3, 'Bob Engineer', 'bob_engineer', 'hashed_password_3'),\n(4, 'Charlie Clerk', 'charlie_clerk', 'hashed_password_4'),\n(5, 'David Operator', 'david_operator', 'hashed_password_5'),\n(6, 'Eva Supervisor', 'eva_supervisor', 'hashed_password_6'),\n(7, 'Frank Attendant', 'frank_attendant', 'hashed_password_7'),\n(8, 'Grace Conductor', 'grace_conductor', 'hashed_password_8'),\n(9, 'Henry Dispatcher', 'henry_dispatcher', 'hashed_password_9'),\n(10, 'Ivy Technician', 'ivy_technician', 'hashed_password_10'),\n(11, 'Jack Security', 'jack_security', 'hashed_password_11'),\n(12, 'Kelly Operator', 'kelly_operator', 'hashed_password_12'),\n(13, 'Leo Engineer', 'leo_engineer', 'hashed_password_13'),\n(14, 'Mia Supervisor', 'mia_supervisor', 'hashed_password_14'),\n(15, 'Noah Clerk', 'noah_clerk', 'hashed_password_15');\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+    "options": {
+        "tabSize": 4,
+        "insertSpaces": true,
+        "indentSize": 4,
+        "defaultEOL": "LF",
+        "trimAutoWhitespace": true
+    },
+    "viewState": {
+        "cursorState": [
+            {
+                "inSelectionMode": false,
+                "selectionStart": {
+                    "lineNumber": 77,
+                    "column": 26
+                },
+                "position": {
+                    "lineNumber": 77,
+                    "column": 26
+                }
+            }
+        ],
+        "viewState": {
+            "scrollLeft": 0,
+            "firstPosition": {
+                "lineNumber": 58,
+                "column": 1
+            },
+            "firstPositionDeltaTop": -15
+        },
+        "contributionsState": {
+            "editor.contrib.folding": {},
+            "editor.contrib.wordHighlighter": false
+        }
+    },
+    "contexts": [
+        {
+            "state": {
+                "start": 1,
+                "end": 1,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 2,
+                            "content": "Welcome to the MySQL Shell - DB Notebook.\n\nPress Cmd+Enter to execute the code block.\n\nExecute \\sql to switch to SQL, \\js to JavaScript and \\ts to TypeScript mode.\nExecute \\help or \\? for help;",
+                            "language": "ansi"
+                        }
+                    ]
+                },
+                "currentHeight": 104,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 69
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 2,
+                "end": 165,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 27
+                        },
+                        "contentStart": 1,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 27,
+                            "length": 15
+                        },
+                        "contentStart": 28,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 42,
+                            "length": 72
+                        },
+                        "contentStart": 43,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 114,
+                            "length": 175
+                        },
+                        "contentStart": 115,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 289,
+                            "length": 15
+                        },
+                        "contentStart": 290,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 304,
+                            "length": 152
+                        },
+                        "contentStart": 305,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 456,
+                            "length": 847
+                        },
+                        "contentStart": 457,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1303,
+                            "length": 16
+                        },
+                        "contentStart": 1305,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1319,
+                            "length": 164
+                        },
+                        "contentStart": 1320,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1483,
+                            "length": 3048
+                        },
+                        "contentStart": 1485,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 4531,
+                            "length": 9
+                        },
+                        "contentStart": 4533,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 4540,
+                            "length": 24
+                        },
+                        "contentStart": 4541,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 4564,
+                            "length": 17
+                        },
+                        "contentStart": 4567,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 4581,
+                            "length": 246
+                        },
+                        "contentStart": 4582,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 4827,
+                            "length": 369
+                        },
+                        "contentStart": 4828,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 5196,
+                            "length": 23
+                        },
+                        "contentStart": 5197,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 5219,
+                            "length": 17
+                        },
+                        "contentStart": 5222,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 5236,
+                            "length": 289
+                        },
+                        "contentStart": 5237,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 5525,
+                            "length": 1379
+                        },
+                        "contentStart": 5526,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 6904,
+                            "length": 25
+                        },
+                        "contentStart": 6905,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 6929,
+                            "length": 225
+                        },
+                        "contentStart": 6932,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 7154,
+                            "length": 1017
+                        },
+                        "contentStart": 7156,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 8171,
+                            "length": 14
+                        },
+                        "contentStart": 8170,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 166,
+                "end": 166,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": []
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 167,
+                "end": 167,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": []
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 168,
+                "end": 168,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": []
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 169,
+                "end": 169,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": []
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 170,
+                "end": 170,
+                "language": "mysql",
+                "currentHeight": 180,
+                "statements": []
+            },
+            "data": []
+        }
+    ]
+}
