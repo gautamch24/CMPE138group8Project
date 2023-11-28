@@ -3,6 +3,7 @@
 import mysql.connector
 from getpass import getpass  # For secure password input
 import logging
+import hashlib
 
 # Setup logging
 logging.basicConfig(filename='database_app.log', level=logging.INFO)
@@ -21,13 +22,27 @@ except Exception as e:
     logging.error(f"Error connecting to the database: {e}")
     exit()
 
+def register():
+    username = input("Enter your username: ")
+    password = getpass("Enter your password: ")
+
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    try:
+        cursor.execute("INSERT INTO USERS (User_Name, User_Password) VALUES (%s, %s)", (username, hashed_password))
+        conn.commit()
+        logging.info("Registration successful.")
+    except Exception as e:
+        logging.error(f"Error registering user: {e}")
+
 def login():
     username = input("Enter your username: ")
     password = getpass("Enter your password: ")
 
     # Hash or encrypt the password before comparing with the database
 
-    cursor.execute("SELECT * FROM USERS WHERE User_Name = %s AND User_Password = %s", (username, password))
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    
+    cursor.execute("SELECT * FROM USERS WHERE User_Name = %s AND User_Password = %s", (username, hashed_password))
     user = cursor.fetchone()
 
     if user:
@@ -173,7 +188,8 @@ def main():
             admin_menu()
         else:
             end_user_menu()
-
+else:
+    register()
     # Close the connection when done
     conn.close()
 
