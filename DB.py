@@ -32,13 +32,17 @@ def create_Table(cursor):
 
 def register(cursor,conn,data):
     CustomerID = random.randint(0,10000)
+
+    hashed_password = hashlib.sha256(data['CUSTOMER_Password'].encode()).hexdigest()
+    
     cursor.execute(f"""INSERT INTO customers (CUSTOMER_ID, CUSTOMER_Name, CUSTOMER_Password, CUSTOMER_Email, CUSTOMER_Phone_Number, Ticket_ID,Train_ID)
-                        VALUES({CustomerID},'{data ['CUSTOMER_Name']}', '{data ['CUSTOMER_Password']}', '{data ['CUSTOMER_Email']}', '{data ['CUSTOMER_Phone_Number']}',{0},{0})
+                        VALUES({CustomerID},'{data ['CUSTOMER_Name']}', '{data ['hashed_password']}', '{data ['CUSTOMER_Email']}', '{data ['CUSTOMER_Phone_Number']}',{0},{0})
                     """)
     conn.commit()
 
 def login(cursor,data):
-    cursor.execute(f"""SELECT * FROM customers where CUSTOMER_email ='{data ['CUSTOMER_Email']}' AND CUSTOMER_Password = '{data ['CUSTOMER_Password']}'""")
+    hashed_input_password = hashlib.sha256(data['CUSTOMER_Password'].encode()).hexdigest()
+    cursor.execute(f"""SELECT * FROM customers where CUSTOMER_email ='{data ['CUSTOMER_Email']}' AND CUSTOMER_Password = '{hashed_input_password}'""")
     if cursor.fetchone() != NONE:
         return True
     return False
