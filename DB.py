@@ -3,6 +3,7 @@ import mysql.connector
 import random
 import hashlib
 import os
+import bcrypt
 from tkinter import *
 
 
@@ -32,18 +33,25 @@ def create_Table(cursor):
 
 def register(cursor,conn,data):
     CustomerID = random.randint(1,10000)
-    cursor.execute(f"""INSERT INTO customers (CUSTOMER_ID, CUSTOMER_Name, CUSTOMER_Password, CUSTOMER_Email, CUSTOMER_Phone_Number)
-                        VALUES({CustomerID},'{data ['CUSTOMER_Name']}', '{data ['CUSTOMER_Password']}', '{data ['CUSTOMER_Email']}', '{data ['CUSTOMER_Phone_Number']}')
-                    """)
+    hashed_password = bcrypt.hashpw((data['CUSTOMER_Password']).encode('utf-8'),bcrypt.gensalt(10))
+    cursor.execute("""
+        INSERT INTO customers (CUSTOMER_ID, CUSTOMER_Name, CUSTOMER_PASSWORD, CUSTOMER_EMAIL, CUSTOMER_Phone_Number)
+        VALUES (%s, %s, %s, %s, %s)
+    """, (CustomerID,data['CUSTOMER_Name'], hashed_password.decode('utf-8'), data['CUSTOMER_Email'], data['CUSTOMER_Phone_Number']))
     conn.commit()
 
 def login(cursor,data):
-    cursor.execute(f"""SELECT * FROM customers where CUSTOMER_email ='{data ['CUSTOMER_Email']}' AND CUSTOMER_Password = '{data ['CUSTOMER_Password']}'""")
+    password = bytes(data['CUSTOMER_Password'],encoding=('utf-8'))
+    cursor.execute("""
+    SELECT CUSTOMER_PASSWORD FROM customers WHERE CUSTOMER_Email = %s""", (data['CUSTOMER_Email'],))
     result = cursor.fetchone()
-    if result != NONE:
-        return result
+    print(result)
+    if result != None:
+        matched = bcrypt.checkpw(password, bytes(result[0]))
+        return matched
     else:
         return False
+    
 
 def scheduleSelection(cursor,dataForTrain):
     cursor.execute(f"""SELECT * FROM Schedule WHERE Train_Date = '{dataForTrain['Train_Date']}'""")
